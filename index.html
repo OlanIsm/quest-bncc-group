@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BNCC Feedback Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="container mt-5 mb-5">
+    <h2 class="mb-4">BNCC Event Feedback</h2>
+
+    <form id="feedbackForm" class="card p-4 shadow-sm">
+      <div class="mb-3">
+        <label class="form-label">Nama</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          required
+          placeholder="Masukkan nama kamu"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          required
+          placeholder="email@example.com"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nama Event</label>
+        <input
+          type="text"
+          id="eventName"
+          class="form-control"
+          required
+          placeholder="Contoh: Tech Dive"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Divisi</label>
+        <select id="division" class="form-select">
+          <option value="RnD">RnD</option>
+          <option value="LnT">LnT</option>
+          <option value="EEO">EEO</option>
+          <option value="PR">PR</option>
+          <option value="HRD">HRD</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Rating (1-5)</label>
+        <input
+          type="number"
+          id="rating"
+          class="form-control"
+          min="1"
+          max="5"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Komentar (Opsional)</label>
+        <textarea
+          id="comment"
+          class="form-control"
+          rows="2"
+          placeholder="Gimana kesan pesan kamu?"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Saran (Opsional)</label>
+        <textarea
+          id="suggestion"
+          class="form-control"
+          rows="2"
+          placeholder="Ada masukan buat event selanjutnya?"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Kirim Feedback
+      </button>
+    </form>
+
+    <script>
+      document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          // Ambil data dari semua input termasuk comment & suggestion
+          const data = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            eventName: document.getElementById("eventName").value,
+            division: document.getElementById("division").value,
+            rating: document.getElementById("rating").value,
+            comment: document.getElementById("comment").value, // Baru
+            suggestion: document.getElementById("suggestion").value, // Baru
+          };
+
+          try {
+            const response = await fetch("http://localhost:3000/api/feedback", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+              alert("✅ " + result.message);
+              document.getElementById("feedbackForm").reset(); // Reset form biar bersih
+            } else {
+              alert("❌ Gagal: " + result.message);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Gagal kirim feedback, cek koneksi server!");
+          }
+        });
+    </script>
+  </body>
+</html>
