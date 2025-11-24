@@ -55,6 +55,27 @@ app.post("/api/feedback", (req, res) => {
   });
 });
 
+//ROUTE UNTUK UPDATE DATA
+app.put("/api/feedback/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  // Cari index data yang mau diedit
+  const index = feedbacks.findIndex((item) => item.id === id);
+
+  if (index !== -1) {
+    // Update data yang ada dengan data baru
+    feedbacks[index] = { ...feedbacks[index], ...updatedData };
+
+    res.json({
+      message: "Feedback berhasil diupdate!",
+      data: feedbacks[index],
+    });
+  } else {
+    res.status(404).json({ message: "Feedback tidak ditemukan" });
+  }
+});
+
 // 3. DELETE: Hapus feedback berdasarkan ID [cite: 51]
 app.delete("/api/feedback/:id", (req, res) => {
   const { id } = req.params;
