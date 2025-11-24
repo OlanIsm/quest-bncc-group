@@ -10,10 +10,10 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// === DATABASE SEMENTARA (ARRAY)  ===
+// DATABASE SEMENTARA (ARRAY)
 let feedbacks = [];
 
-// === ROUTES API [cite: 46] ===
+// ROUTES API
 
 // 1. GET: Ambil semua feedback (Untuk Admin Panel)
 app.get("/api/feedback", (req, res) => {
@@ -38,12 +38,12 @@ app.post("/api/feedback", (req, res) => {
     name,
     email,
     eventName,
-    division, // Enum: "LnT" | "EEO" | "PR" | "HRD" | "RnD" [cite: 33]
+    division, // Enum: "LnT" | "EEO" | "PR" | "HRD" | "RnD"
     rating: parseInt(rating),
     comment: comment || "",
     suggestion: suggestion || "",
-    createdAt: new Date().toISOString(), // [cite: 37]
-    status: "open", // Default status [cite: 38]
+    createdAt: new Date().toISOString(), //
+    status: "open", // Default status
   };
 
   feedbacks.push(newFeedback); // Simpan ke array
@@ -76,7 +76,7 @@ app.put("/api/feedback/:id", (req, res) => {
   }
 });
 
-// 3. DELETE: Hapus feedback berdasarkan ID [cite: 51]
+// 3. DELETE: Hapus feedback berdasarkan ID
 app.delete("/api/feedback/:id", (req, res) => {
   const { id } = req.params;
   feedbacks = feedbacks.filter((item) => item.id !== id); // Filter data selain ID yg dihapus
